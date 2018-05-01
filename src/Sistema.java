@@ -36,4 +36,8 @@ public class Sistema {
             ocupabilidad--;
         }
     }
+
+    public void procesar_evento(){
+        
+    }
 }
