@@ -1,4 +1,4 @@
-public class Evento {
+public class Evento implements Comparable<Evento>{
 
     public int tipo; //0 para entrada y 1 para salida
     public int hora; //unidad de tiempo en minutos
@@ -7,6 +7,11 @@ public class Evento {
     public Evento(int tipo_evento, int hora_evento){
         tipo = tipo_evento;
         hora = hora_evento;
+    }
+
+    @Override
+    public int compareTo(Evento o) {
+        return 0;
     }
 
     public int getTipo() {
