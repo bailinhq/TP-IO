@@ -4,34 +4,35 @@ import java.util.Random;
 public class Sistema {
 
     public final int numero_servidores = 2;
-    public int ocupabilidad;
-    public int reloj;
-    public int tamano_cola;
-    public PriorityQueue<Evento> lista_eventos;
+    private int ocupabilidad;
+    private int reloj;
+    private int tamano_cola;
+    private PriorityQueue<Evento> lista_eventos;
+    private Evento evento;
 
     public Sistema(){
         ocupabilidad = 0;
         reloj = 0;
         tamano_cola = 0;
         lista_eventos = new PriorityQueue<Evento>();
-        lista_eventos.add(new Evento(0,0))
+        lista_eventos.add(new Evento(0,0,0));
     }
 
-    public void generar_entrada(){
+    public void procesar_entrada(){
 
         if (ocupabilidad == numero_servidores){
             tamano_cola++;
         } else{
             ocupabilidad++;
-            this.generar_salida();
+            //generar_salida();
         }
-        generar_entrada();
+        //generar_entrada();
     }
 
-    public void generar_salida(){
+    public void procesar_salida(){
         if (tamano_cola > 0){
             tamano_cola--;
-            generar_salida();
+            //generar_salida();
         } else{
             ocupabilidad--;
         }
@@ -39,5 +40,21 @@ public class Sistema {
 
     public void procesar_evento(){
         
+    }
+
+
+
+    public void generar_entrada(){
+        double random = obtener_numero_azar();
+        evento = new Evento(0,random,reloj);
+    }
+
+    public void generar_salida(){
+        double random = obtener_numero_azar();
+        evento = new Evento(0,random,reloj);
+    }
+
+    public double obtener_numero_azar(){
+        return Math.random();
     }
 }
