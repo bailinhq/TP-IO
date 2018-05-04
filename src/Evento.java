@@ -13,12 +13,21 @@ public class Evento implements Comparable<Evento>{
         hora = tiempo_reloj;
     }
 
-
-
-
     @Override
     public int compareTo(Evento o) {
-        return o.getTipo();
+        if (this.hora < o.hora){
+            return -1;
+        } else if (this.hora > o.hora){
+            return 1;
+        } else{
+            if (this.tipo == o.tipo){
+                return 0;
+            } else if (this.tipo == 1){
+                return -1;
+            } else{
+                return 1;
+            }
+        }
     }
 
 
