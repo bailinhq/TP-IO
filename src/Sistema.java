@@ -3,27 +3,30 @@ import java.util.Random;
 
 public class Sistema {
 
-    public final int numero_servidores = 2;
+    private final int numero_servidores = 2;
     private int ocupabilidad;
     private int reloj;
     private int tamano_cola;
     private double[] numsRandom;
     private PriorityQueue<Evento> lista_eventos;
     private Evento evento_temporal;
+    private Random random;
 
     public Sistema(){
         ocupabilidad = 0;
         reloj = 0;
         tamano_cola = 0;
-        lista_eventos = new PriorityQueue<Evento>();
+        lista_eventos = new PriorityQueue<>();
         lista_eventos.add(new Evento(0,0));
-        numsRandom = new double[50];
+        numsRandom = new double[51];
         setNumsRandom();
         evento_temporal = new Evento(0,0);
+        random = new Random();
     }
 
     public void simular_sistema(){
         evento_temporal = lista_eventos.poll();
+        System.out.println(evento_temporal.getTipo() + "hora" + evento_temporal.getHora());
         reloj = evento_temporal.getHora();
         if (evento_temporal.getTipo() == 0){
             procesar_entrada();
@@ -31,15 +34,12 @@ public class Sistema {
             procesar_salida();
         }
 
-    }
+    } 
 
-    public void procesar_evento(){
-    }
-
-    public void generar_salida(){
-        Random random = new Random();
+    private void generar_salida(){
         double valor_aleatorio = random.nextDouble();
-        int tiempo_agregado = 0;
+        //System.out.println(valor_aleatorio);
+        int tiempo_agregado;
         if (valor_aleatorio <= 0.10){
             tiempo_agregado = 2;
         } else if (valor_aleatorio <= 0.35){
@@ -51,11 +51,10 @@ public class Sistema {
         } else{
             tiempo_agregado = 10;
         }
-
         lista_eventos.offer(new Evento(1,reloj + tiempo_agregado));
     }
 
-    public void procesar_salida(){
+    private void procesar_salida(){
         if (tamano_cola > 0){
             tamano_cola--;
             generar_salida();
@@ -64,10 +63,10 @@ public class Sistema {
         }
     }
 
-    public void generar_entrada(){
-        Random random = new Random();
+    private void generar_entrada(){
         double valor_aleatorio = random.nextDouble();
-        int tiempo_agregado = 0;
+        //System.out.println(valor_aleatorio);
+        int tiempo_agregado;
         if (valor_aleatorio <= 0.40){
             tiempo_agregado = 1;
         } else if (valor_aleatorio <= 0.75){
@@ -78,7 +77,7 @@ public class Sistema {
         lista_eventos.offer(new Evento(0,reloj + tiempo_agregado));
     }
 
-    public void procesar_entrada(){
+    private void procesar_entrada(){
         if (ocupabilidad == numero_servidores){
             tamano_cola++;
         } else{
@@ -88,7 +87,7 @@ public class Sistema {
         generar_entrada();
     }
 
-    public void setNumsRandom()
+    private void setNumsRandom()
     {
         numsRandom[0]=0.4;
         numsRandom[1]=0.64;
