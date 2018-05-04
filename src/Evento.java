@@ -29,15 +29,15 @@ public class Evento implements Comparable<Evento>{
     public int compareTo(Evento o) {
         if(getHora()!=o.getHora()) {
             if (getHora() < o.getHora())
-                return 1;
-            else
                 return -1;
+            else
+                return 1;
         }else
         {
             if(getTipo()<o.getTipo())
-                return 1;
-            else
                 return -1;
+            else
+                return 1;
         }
     }
 

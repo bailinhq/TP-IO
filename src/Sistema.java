@@ -27,11 +27,13 @@ public class Sistema {
 
     public void run()
     {
-        while (numero_salidas<=100)
+        while (numero_salidas<15)
         {
+            lista_eventos.comparator();
             procesar_evento();
         }
     }
+
     public void procesar_entrada(){
         if (ocupabilidad == numero_servidores){
             tamano_cola++;
@@ -65,10 +67,11 @@ public class Sistema {
             reloj = temporal.getHora();
             if(temporal.getTipo()==evento_entrada){
                 procesar_entrada();
+                System.out.println("Se procesa entrada con reloj:"+reloj);
             }else{
                 procesar_salida();
+                System.out.println("Se procesa Salida con reloj:"+reloj);
             }
-
         }
     }
 
@@ -80,7 +83,8 @@ public class Sistema {
     public void generar_evento(int tipo){
         double random = obtener_numero_azar();
         evento = new Evento(tipo,random,reloj);
-        lista_eventos.add(evento);
+        //lista_eventos.add(evento);
+        lista_eventos.offer(evento);
     }
 
     public double obtener_numero_azar(){
