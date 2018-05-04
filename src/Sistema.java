@@ -11,7 +11,7 @@ public class Sistema {
     private PriorityQueue<Evento> lista_eventos;
     private Evento evento_temporal;
     private Random random;
-
+    private int numero_salidas;
     public Sistema(){
         ocupabilidad = 0;
         reloj = 0;
@@ -22,6 +22,7 @@ public class Sistema {
         setNumsRandom();
         evento_temporal = new Evento(0,0);
         random = new Random();
+        numero_salidas = 0;
     }
 
     public void simular_sistema(){
@@ -34,7 +35,7 @@ public class Sistema {
             procesar_salida();
         }
 
-    } 
+    }
 
     private void generar_salida(){
         double valor_aleatorio = random.nextDouble();
@@ -61,6 +62,7 @@ public class Sistema {
         } else{
             ocupabilidad--;
         }
+        numero_salidas++;
     }
 
     private void generar_entrada(){
