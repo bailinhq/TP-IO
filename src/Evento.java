@@ -20,10 +20,25 @@ public class Evento implements Comparable<Evento>{
         }
     }
 
+
+
+
     @Override
     public int compareTo(Evento o) {
-        return 0;
+        if(getHora()!=o.getHora()) {
+            if (getHora() < o.getHora())
+                return 1;
+            else
+                return -1;
+        }else
+        {
+            if(getTipo()<o.getTipo())
+                return 1;
+            else
+                return -1;
+        }
     }
+
 
     public int getTipo() {
         return tipo;
