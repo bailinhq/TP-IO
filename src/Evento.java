@@ -1,7 +1,7 @@
 public class Evento implements Comparable<Evento>{
 
-    public int tipo; //0 para entrada y 1 para salida
-    public int hora; //unidad de tiempo en minutos
+    private int tipo; //0 para entrada y 1 para salida
+    private int hora; //unidad de tiempo en minutos
 
     /**
      *
@@ -11,12 +11,14 @@ public class Evento implements Comparable<Evento>{
      */
     public Evento(int tipo_evento, double hora_evento, int tiempo_reloj){
         tipo = tipo_evento;
-
+        //System.out.println("\n"+tiempo_reloj);
         if(tipo_evento==0)
         {
             hora = obtener_tiempo_entrada(hora_evento)+tiempo_reloj;
+            //System.out.println("Tiempo evento:"+hora_evento+"--->"+hora);
         }else {
-            hora = obtener_tiempo_salida(tiempo_reloj)+tiempo_reloj;
+            hora = obtener_tiempo_salida(hora_evento)+tiempo_reloj;
+            //System.out.println("Tiempo evento:"+hora_evento+"--->"+hora);
         }
     }
 

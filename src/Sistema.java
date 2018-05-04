@@ -22,11 +22,17 @@ public class Sistema {
         tamano_cola = 0;
         numero_salidas = 0;
         lista_eventos = new PriorityQueue<Evento>();
-        lista_eventos.add(new Evento(0,0,0));
+        lista_eventos.add(new Evento(0,10,reloj));
     }
 
+    public void run()
+    {
+        while (numero_salidas<=100)
+        {
+            procesar_evento();
+        }
+    }
     public void procesar_entrada(){
-
         if (ocupabilidad == numero_servidores){
             tamano_cola++;
         } else{
@@ -51,7 +57,19 @@ public class Sistema {
     }
 
     public void procesar_evento(){
-        
+        Evento temporal;
+        if(lista_eventos.isEmpty()) {
+            System.out.println("La lista de eventos esta vacia");
+        }else{
+            temporal = lista_eventos.poll();
+            reloj = temporal.getHora();
+            if(temporal.getTipo()==evento_entrada){
+                procesar_entrada();
+            }else{
+                procesar_salida();
+            }
+
+        }
     }
 
 
@@ -60,7 +78,7 @@ public class Sistema {
      * @param tipo 0 sí es entrada y 1 para salidas
      */
     public void generar_evento(int tipo){
-        double random = 0;//obtener_numero_azar();
+        double random = obtener_numero_azar();
         evento = new Evento(tipo,random,reloj);
         lista_eventos.add(evento);
     }
@@ -71,10 +89,16 @@ public class Sistema {
 
     public void imprimirLista()
     {
-        Evento tem;
-        for (int i = 0; i <= lista_eventos.size(); i++) {
-            tem=lista_eventos.poll();
-            System.out.println("Tipo de evento:"+tem.tipo);
+        Evento temporal=null;
+        if(!lista_eventos.isEmpty())
+            temporal = lista_eventos.poll();
+        while(temporal!=null){
+            if(temporal.getTipo()==0)
+                System.out.println("\n\nTipo de evento: Entrada");
+            else
+                System.out.println("\n\nTipo de evento: Salida");
+            System.out.println("Tiempo: "+temporal.getHora());
+            temporal=lista_eventos.poll();
         }
     }
 }
