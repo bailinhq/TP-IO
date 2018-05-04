@@ -1,4 +1,5 @@
 import java.util.PriorityQueue;
+import java.util.Random;
 
 public class Sistema {
 
@@ -8,8 +9,7 @@ public class Sistema {
     private int tamano_cola;
     private double[] numsRandom;
     private PriorityQueue<Evento> lista_eventos;
-
-
+    private Evento evento_temporal;
 
     public Sistema(){
         ocupabilidad = 0;
@@ -18,31 +18,74 @@ public class Sistema {
         lista_eventos = new PriorityQueue<Evento>();
         lista_eventos.add(new Evento(0,0));
         numsRandom = new double[50];
-
+        setNumsRandom();
+        evento_temporal = new Evento(0,0);
     }
 
     public void simular_sistema(){
+        evento_temporal = lista_eventos.poll();
+        reloj = evento_temporal.getHora();
+        if (evento_temporal.getTipo() == 0){
+            procesar_entrada();
+        } else{
+            procesar_salida();
+        }
 
     }
 
-    public void procesar_entrada(Evento evento){
+    public void procesar_evento(){
+    }
+
+    public void generar_salida(){
+        Random random = new Random();
+        double valor_aleatorio = random.nextDouble();
+        int tiempo_agregado = 0;
+        if (valor_aleatorio <= 0.10){
+            tiempo_agregado = 2;
+        } else if (valor_aleatorio <= 0.35){
+            tiempo_agregado = 3;
+        } else if (valor_aleatorio <= 0.75){
+            tiempo_agregado = 4;
+        } else if (valor_aleatorio <=0.95){
+            tiempo_agregado = 7;
+        } else{
+            tiempo_agregado = 10;
+        }
+
+        lista_eventos.offer(new Evento(1,reloj + tiempo_agregado));
+    }
+
+    public void procesar_salida(){
+        if (tamano_cola > 0){
+            tamano_cola--;
+            generar_salida();
+        } else{
+            ocupabilidad--;
+        }
+    }
+
+    public void generar_entrada(){
+        Random random = new Random();
+        double valor_aleatorio = random.nextDouble();
+        int tiempo_agregado = 0;
+        if (valor_aleatorio <= 0.40){
+            tiempo_agregado = 1;
+        } else if (valor_aleatorio <= 0.75){
+            tiempo_agregado = 2;
+        } else{
+            tiempo_agregado = 3;
+        }
+        lista_eventos.offer(new Evento(0,reloj + tiempo_agregado));
+    }
+
+    public void procesar_entrada(){
         if (ocupabilidad == numero_servidores){
             tamano_cola++;
         } else{
             ocupabilidad++;
-            //generar_salida();
+            generar_salida();
         }
-        //generar_entrada();
-    }
-
-    public void procesar_salida(Evento evento){
-        if (tamano_cola > 0){
-            tamano_cola--;
-            //generar_salida();
-        } else{
-            ocupabilidad--;
-        }
-        //para contar el numero de salidas
+        generar_entrada();
     }
 
     public void setNumsRandom()
