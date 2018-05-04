@@ -6,20 +6,11 @@ public class Evento implements Comparable<Evento>{
     /**
      *
      * @param tipo_evento Tipo de evento a crear
-     * @param hora_evento Tiempo aleatorio
      * @param tiempo_reloj Tiempo del reloj cuando se genera el evento
      */
-    public Evento(int tipo_evento, double hora_evento, int tiempo_reloj){
+    public Evento(int tipo_evento, int tiempo_reloj){
         tipo = tipo_evento;
-        //System.out.println("\n"+tiempo_reloj);
-        if(tipo_evento==0)
-        {
-            hora = obtener_tiempo_entrada(hora_evento)+tiempo_reloj;
-            //System.out.println("Tiempo evento:"+hora_evento+"--->"+hora);
-        }else {
-            hora = obtener_tiempo_salida(hora_evento)+tiempo_reloj;
-            //System.out.println("Tiempo evento:"+hora_evento+"--->"+hora);
-        }
+        hora = tiempo_reloj;
     }
 
 
@@ -27,18 +18,7 @@ public class Evento implements Comparable<Evento>{
 
     @Override
     public int compareTo(Evento o) {
-        if(getHora()!=o.getHora()) {
-            if (getHora() < o.getHora())
-                return -1;
-            else
-                return 1;
-        }else
-        {
-            if(getTipo()<o.getTipo())
-                return 1;
-            else
-                return -1;
-        }
+        return o.getTipo();
     }
 
 
@@ -56,35 +36,6 @@ public class Evento implements Comparable<Evento>{
 
     public void setHora(int hora) {
         this.hora = hora;
-    }
-
-    private int obtener_tiempo_entrada(double tiempo){
-        int tiempo_temp= 0;
-
-        if (tiempo <= 0.39)
-            tiempo_temp = 1;
-        else if (tiempo <= 0.74)
-            tiempo_temp = 2;
-        else if (tiempo <= 1)
-            tiempo_temp = 3;
-
-        return tiempo_temp;
-    }
-
-    private int obtener_tiempo_salida(double tiempo){
-        int tiempo_temp= 0;
-        if (tiempo <= 0.09)
-            tiempo_temp = 2;
-        else if (tiempo <= 0.34)
-            tiempo_temp = 3;
-        else if (tiempo <= 0.74)
-            tiempo_temp = 4;
-        else if (tiempo <= 0.94)
-            tiempo_temp = 7;
-        else if (tiempo <= 1)
-            tiempo_temp = 10;
-
-        return tiempo_temp;
     }
 
 }
