@@ -29,7 +29,13 @@ public class Sistema {
 
     public void simular_sistema(){
         evento_temporal = lista_eventos.poll();
-        System.out.println(evento_temporal.getTipo() + "hora" + evento_temporal.getHora());
+        String tipo_evento = "";
+        if(evento_temporal.getTipo() == 0){
+            tipo_evento = "Entrada ";
+        } else{
+            tipo_evento = "Salida ";
+        }
+        System.out.println(tipo_evento + "hora: " + evento_temporal.getHora());
         reloj = evento_temporal.getHora();
         if (evento_temporal.getTipo() == 0){
             procesar_entrada();
