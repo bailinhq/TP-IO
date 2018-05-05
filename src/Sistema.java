@@ -12,6 +12,8 @@ public class Sistema {
     private Evento evento_temporal;
     private Random random;
     private int numero_salidas;
+    private int contador = 0;
+
     public Sistema(){
         ocupabilidad = 0;
         reloj = 0;
@@ -38,7 +40,8 @@ public class Sistema {
     }
 
     private void generar_salida(){
-        double valor_aleatorio = random.nextDouble();
+        //double valor_aleatorio = random.nextDouble();
+        double valor_aleatorio = get_Random();
         //System.out.println(valor_aleatorio);
         int tiempo_agregado;
         if (valor_aleatorio <= 0.10){
@@ -66,7 +69,8 @@ public class Sistema {
     }
 
     private void generar_entrada(){
-        double valor_aleatorio = random.nextDouble();
+        //double valor_aleatorio = random.nextDouble();
+        double valor_aleatorio = get_Random();
         //System.out.println(valor_aleatorio);
         int tiempo_agregado;
         if (valor_aleatorio <= 0.40){
@@ -87,6 +91,12 @@ public class Sistema {
             generar_salida();
         }
         generar_entrada();
+    }
+
+    private double get_Random(){
+        double x = numsRandom[contador];
+        contador++;
+        return x;
     }
 
     private void setNumsRandom()
