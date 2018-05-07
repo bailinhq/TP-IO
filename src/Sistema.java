@@ -105,6 +105,10 @@ public class Sistema {
         return x;
     }
 
+    public int getNumero_salidas() {
+        return numero_salidas;
+    }
+
     private void setNumsRandom()
     {
         numsRandom[0]=0.4;
