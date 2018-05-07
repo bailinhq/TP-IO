@@ -29,7 +29,7 @@ public class Sistema {
 
     public void simular_sistema(){
         evento_temporal = lista_eventos.poll();
-        String tipo_evento = "";
+        String tipo_evento;
         if(evento_temporal.getTipo() == 0){
             tipo_evento = "Entrada ";
         } else{
@@ -100,9 +100,7 @@ public class Sistema {
     }
 
     private double get_Random(){
-        double x = numsRandom[contador];
-        contador++;
-        return x;
+        return numsRandom[contador++];
     }
 
     public int getNumero_salidas() {
