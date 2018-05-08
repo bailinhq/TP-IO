@@ -1,7 +1,7 @@
 import java.util.PriorityQueue;
 import java.util.Random;
 
-public class Sistema {
+class Sistema {
 
     private final int numero_servidores = 2;
     private int ocupabilidad;
@@ -12,9 +12,13 @@ public class Sistema {
     private Evento evento_temporal;
     private Random random;
     private int numero_salidas;
+    private int numero_entradas;
     private int contador = 0;
+    private int[] tiempo_llegada_cola;
+    private int[] tiempo_salida_cola;
+    private int tempC;
 
-    public Sistema(){
+    Sistema(){
         ocupabilidad = 0;
         reloj = 0;
         tamano_cola = 0;
@@ -25,17 +29,23 @@ public class Sistema {
         evento_temporal = new Evento(0,0);
         random = new Random();
         numero_salidas = 0;
+        numero_entradas=0;
+        tiempo_llegada_cola = new int[19];
+        tiempo_salida_cola = new int[19];
+        tempC = 1;
+
     }
 
-    public void simular_sistema(){
+    void simular_sistema(){
         evento_temporal = lista_eventos.poll();
         String tipo_evento;
-        if(evento_temporal.getTipo() == 0){
+        if((evento_temporal != null ? evento_temporal.getTipo() : 0) == 0){
             tipo_evento = "Entrada ";
+
         } else{
             tipo_evento = "Salida ";
         }
-        System.out.println(tipo_evento + "hora: " + evento_temporal.getHora());
+        System.out.println(tipo_evento + "hora: " + (evento_temporal != null ? evento_temporal.getHora() : 0));
         reloj = evento_temporal.getHora();
         if (evento_temporal.getTipo() == 0){
             procesar_entrada();
@@ -65,13 +75,13 @@ public class Sistema {
     }
 
     private void procesar_salida(){
+        tiempo_salida_cola[++numero_salidas]=evento_temporal.getHora();
         if (tamano_cola > 0){
             tamano_cola--;
             generar_salida();
         } else{
             ocupabilidad--;
         }
-        numero_salidas++;
     }
 
     private void generar_entrada(){
@@ -92,18 +102,23 @@ public class Sistema {
     private void procesar_entrada(){
         if (ocupabilidad == numero_servidores){
             tamano_cola++;
+            tiempo_llegada_cola[numero_entradas++]=evento_temporal.getHora()*-1;
         } else{
+            tiempo_llegada_cola[numero_entradas++]=0;
             ocupabilidad++;
             generar_salida();
         }
+        if(numero_salidas==14)
+            System.out.println(14);
         generar_entrada();
     }
 
     private double get_Random(){
         return numsRandom[contador++];
+        //return Math.random();
     }
 
-    public int getNumero_salidas() {
+    int getNumero_salidas() {
         return numero_salidas;
     }
 
@@ -160,6 +175,20 @@ public class Sistema {
         numsRandom[48]=0.59;
         numsRandom[49]=0.71;
         numsRandom[50]=0.01;
+    }
+
+    double getTiempoCola()
+    {
+        double sum = 0.0;
+        for (int i = 1; i < numero_salidas; i++) {
+            if(tiempo_llegada_cola[i]!=0)
+                sum+=tiempo_llegada_cola[i]+tiempo_salida_cola[i-1];
+        }
+        return sum/numero_salidas;
+    }
+
+    int getTamano_cola(){
+        return  tamano_cola;
     }
 }
 

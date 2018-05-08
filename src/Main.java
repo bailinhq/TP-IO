@@ -6,15 +6,14 @@ public class Main {
         Scanner reader = new Scanner(System.in);
         int numero_Clientes = 0;
 
-        System.out.println("Introduczca el número de clientes que desea procesar");
-        numero_Clientes = reader.nextInt();
+        System.out.println("Introduzca el número de clientes que desea procesar");
+        //numero_Clientes = reader.nextInt();
 
         Sistema sistema = new Sistema();
-        while (true) {
+        while ( sistema.getNumero_salidas()< 15) {
             sistema.simular_sistema();
-            if (sistema.getNumero_salidas() == 15) {
-                break;
-            }
         }
+        System.out.println("El numero de clientes en el sistema es "+ sistema.getTamano_cola() + "\n" +
+                "El tiempo promedio en cola es de " +sistema.getTiempoCola());
     }
 }
