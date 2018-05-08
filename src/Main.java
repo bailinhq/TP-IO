@@ -1,3 +1,18 @@
+/*
+
+UNIVERSIDAD DE COSTA RICA
+CI-1453 - Investigación de operaciones
+_____________________________________________
+Ejercicio 1 Simulación (Tarea Programada)
+_____________________________________________
+Estudiantes:
+B60156 - Hannia Aguilar Salas
+B53546 - Bailin Huang
+B67839 - Gerald Vindas Aguilar
+______________________________________________
+
+*/
+
 import java.util.Scanner;
 import java.lang.*;
 
