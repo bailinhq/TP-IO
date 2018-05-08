@@ -13,6 +13,11 @@ public class Evento implements Comparable<Evento>{
         hora = tiempo_reloj;
     }
 
+    /**
+     * Ordena un evento en la lista de eventos por tiempo del reloj y si hay dos iguales, primero coloca la salida.
+     * @param o Recibe el evento a ordenar
+     * @return Retorna un número que permite ordenar la lista.
+     */
     @Override
     public int compareTo(Evento o) {
         if (this.hora < o.hora){
@@ -30,21 +35,12 @@ public class Evento implements Comparable<Evento>{
         }
     }
 
+    public int getTipo() { return tipo; }
 
-    public int getTipo() {
-        return tipo;
-    }
+    public void setTipo(int tipo) { this.tipo = tipo; }
 
-    public void setTipo(int tipo) {
-        this.tipo = tipo;
-    }
+    public int getHora() {  return hora; }
 
-    public int getHora() {
-        return hora;
-    }
-
-    public void setHora(int hora) {
-        this.hora = hora;
-    }
+    public void setHora(int hora) { this.hora = hora; }
 
 }

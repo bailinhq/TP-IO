@@ -1,52 +1,72 @@
+import java.text.DecimalFormat;
 import java.util.PriorityQueue;
 import java.util.Random;
 
 class Sistema {
-
-    private final int numero_servidores = 2;
+    //Variables estado
     private int ocupabilidad;
+    private PriorityQueue<Evento> lista_eventos;
+
+    //Variables de simulación
+    private final int numero_servidores = 2;
     private int reloj;
     private int tamano_cola;
-    private double[] numsRandom;
-    private PriorityQueue<Evento> lista_eventos;
     private Evento evento_temporal;
     private Random random;
+
+    //Variables estadísticas
     private int numero_salidas;
     private int numero_entradas;
-    private int contador = 0;
     private int[] tiempo_llegada_cola;
     private int[] tiempo_salida_cola;
-    private int tempC;
+
+    //Números aleatorios dados en clase
+    private double[] numsRandom;
+    private int contador = 0;
 
     Sistema(){
         ocupabilidad = 0;
-        reloj = 0;
-        tamano_cola = 0;
         lista_eventos = new PriorityQueue<>();
         lista_eventos.add(new Evento(0,0));
+
+        reloj = 0;
+        tamano_cola = 0;
         numsRandom = new double[51];
         setNumsRandom();
         evento_temporal = new Evento(0,0);
         random = new Random();
+
         numero_salidas = 0;
         numero_entradas=0;
         tiempo_llegada_cola = new int[19];
         tiempo_salida_cola = new int[19];
-        tempC = 1;
-
     }
 
-    void simular_sistema(){
+    int getNumero_salidas() {
+        return numero_salidas;
+    }
+
+    int getTamano_cola(){ return  tamano_cola; }
+
+
+    /**
+     * Se encarga de procesar el evento personal según el tipo y por lo tanto cambia las variables de estado.
+     */
+    void simular_sistema()
+    {
+        //Obtener el evento
         evento_temporal = lista_eventos.poll();
         String tipo_evento;
+
+        //Mostrar tipo de evento en pantalla
         if((evento_temporal != null ? evento_temporal.getTipo() : 0) == 0){
             tipo_evento = "|\t" + (numero_entradas +1) + "\t\t|\tEntrada";
 
         } else{
             tipo_evento = "|\t" +  (numero_salidas +1) + "\t\t|\tSalida ";
         }
-        System.out.println(tipo_evento + "\t\t|\t\t" + (evento_temporal != null ? evento_temporal.getHora() : 0) +"\t\t\t|");
-        System.out.println("|_______________________________________________|" );
+
+        //Procesar el evento
         reloj = evento_temporal.getHora();
         if (evento_temporal.getTipo() == 0){
             procesar_entrada();
@@ -54,12 +74,19 @@ class Sistema {
             procesar_salida();
         }
 
+        //Mostrar el estado del sistema después del evento
+        System.out.println(tipo_evento + "\t\t|\t\t" + (evento_temporal != null ? evento_temporal.getHora() : 0) +"\t\t|"+
+        "\t\t\t" + ocupabilidad + "\t\t\t|\t\t" + tamano_cola +"\t\t|");
+        System.out.println("|___________________________________________________________________________________|" );
+
     }
 
-    private void generar_salida(){
-        //double valor_aleatorio = random.nextDouble();
+    /**
+     * Genera una salida, sumando al reloj los valores de la tabla dada en clase.
+     */
+    private void generar_salida()
+    {
         double valor_aleatorio = get_Random();
-        //System.out.println(valor_aleatorio);
         int tiempo_agregado;
         if (valor_aleatorio <= 0.10){
             tiempo_agregado = 2;
@@ -75,7 +102,11 @@ class Sistema {
         lista_eventos.offer(new Evento(1,reloj + tiempo_agregado));
     }
 
-    private void procesar_salida(){
+    /**
+     * Procesa la salida de una llamada.
+     */
+    private void procesar_salida()
+    {
         tiempo_salida_cola[++numero_salidas]=evento_temporal.getHora();
         if (tamano_cola > 0){
             tamano_cola--;
@@ -85,10 +116,12 @@ class Sistema {
         }
     }
 
-    private void generar_entrada(){
-        //double valor_aleatorio = random.nextDouble();
+    /**
+     * Genera una llegada, sumando al reloj los valores de la tabla dada en clase.
+     */
+    private void generar_entrada()
+    {
         double valor_aleatorio = get_Random();
-        //System.out.println(valor_aleatorio);
         int tiempo_agregado;
         if (valor_aleatorio <= 0.40){
             tiempo_agregado = 1;
@@ -100,7 +133,12 @@ class Sistema {
         lista_eventos.offer(new Evento(0,reloj + tiempo_agregado));
     }
 
-    private void procesar_entrada(){
+
+    /**
+     * Procesa la entrada de una llamada.
+     */
+    private void procesar_entrada()
+    {
         if (ocupabilidad == numero_servidores){
             tamano_cola++;
             tiempo_llegada_cola[numero_entradas++]=evento_temporal.getHora()*-1;
@@ -109,20 +147,52 @@ class Sistema {
             ocupabilidad++;
             generar_salida();
         }
-        //if(numero_salidas==14)
-           // System.out.println(14);
         generar_entrada();
     }
 
-    private double get_Random(){
-        return numsRandom[contador++];
-        //return Math.random();
+    /**
+     * Permite obtener los números aleatorios
+     * @return Retorna un número aleatorio generado en java
+     */
+    private double get_Random()
+    {
+        //return numsRandom[contador++];
+        return Math.random();
     }
 
-    int getNumero_salidas() {
-        return numero_salidas;
+    /**
+     *
+     * @return Retorna el tiempo promedio de un cliente en cola (Wq)
+     */
+    double getTiempoCola()
+    {
+        double sum = 0.0;
+        for (int i = 1; i < numero_salidas; i++) {
+            if(tiempo_llegada_cola[i]!=0)
+                sum+=tiempo_llegada_cola[i]+tiempo_salida_cola[i-1];
+        }
+        return sum/numero_salidas;
     }
 
+    /**
+     * Utiliza las variables estadísticas para realizar los cálculos y los muestra en pantalla.
+     */
+    void generarEstadisticas()
+    {
+        System.out.println("\n\n _______________________________________________" );
+        System.out.println("|                  Estadísticas                 |");
+        System.out.println("|_______________________________________________|" );
+        DecimalFormat df = new DecimalFormat("#.00");
+        System.out.println("|1) El numero de clientes en el sistema es "+ tamano_cola +
+                "\t|\n|                                               |" +
+                "\n|2) El tiempo promedio en cola es de " + df.format(getTiempoCola() )+ "\t\t|");
+        System.out.println("|_______________________________________________|" );
+    }
+
+
+    /**
+     * Números aleatorios dados en clase
+     */
     private void setNumsRandom()
     {
         numsRandom[0]=0.4;
@@ -176,20 +246,6 @@ class Sistema {
         numsRandom[48]=0.59;
         numsRandom[49]=0.71;
         numsRandom[50]=0.01;
-    }
-
-    double getTiempoCola()
-    {
-        double sum = 0.0;
-        for (int i = 1; i < numero_salidas; i++) {
-            if(tiempo_llegada_cola[i]!=0)
-                sum+=tiempo_llegada_cola[i]+tiempo_salida_cola[i-1];
-        }
-        return sum/numero_salidas;
-    }
-
-    int getTamano_cola(){
-        return  tamano_cola;
     }
 }
 
