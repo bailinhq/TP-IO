@@ -10,17 +10,19 @@ public class Main {
         System.out.println("Introduzca el número de clientes que desea procesar");
         numero_Clientes = reader.nextInt();
 
-        //Imprimir encabezado para los datos
-        System.out.print(" ___________________________________________________________________________________" +
-                         "\n|#Cliente\t|\tTipoEvento\t|\tTiempoReloj\t|\tServidoresOcupados\t|\tLargoCola\t|\n" +
-                         "|___________________________________________________________________________________|\n" );
 
         char seguir='S'; //Booleano para comprobar la repetición de la simulación
 
-        Sistema sistema = new Sistema();
+        Sistema sistema;
         while(seguir=='S') {
-
+            sistema = new Sistema();
             //Iniciar la simulación
+
+            //Imprimir encabezado para los datos
+            System.out.print(" ___________________________________________________________________________________" +
+                    "\n|#Cliente\t|\tTipoEvento\t|\tTiempoReloj\t|\tServidoresOcupados\t|\tLargoCola\t|\n" +
+                    "|___________________________________________________________________________________|\n" );
+
             while (sistema.getNumero_salidas() < 15) {
                 sistema.simular_sistema();
             }

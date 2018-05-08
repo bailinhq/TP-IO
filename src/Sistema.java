@@ -1,4 +1,5 @@
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.PriorityQueue;
 import java.util.Random;
 
@@ -17,8 +18,10 @@ class Sistema {
     //Variables estadísticas
     private int numero_salidas;
     private int numero_entradas;
-    private int[] tiempo_llegada_cola;
-    private int[] tiempo_salida_cola;
+    //private int[] tiempo_llegada_cola;
+    //private int[] tiempo_salida_cola;
+    private ArrayList<Integer> tiempo_llegada_cola;
+    private ArrayList<Integer> tiempo_salida_cola;
 
     //Números aleatorios dados en clase
     private double[] numsRandom;
@@ -38,8 +41,13 @@ class Sistema {
 
         numero_salidas = 0;
         numero_entradas=0;
-        tiempo_llegada_cola = new int[19];
-        tiempo_salida_cola = new int[19];
+        //tiempo_llegada_cola = new int[19];
+        //tiempo_salida_cola = new int[19];
+
+        tiempo_llegada_cola = new ArrayList<>();
+        tiempo_salida_cola = new ArrayList<>();
+
+        tiempo_salida_cola.add(0);
     }
 
     int getNumero_salidas() {
@@ -107,7 +115,9 @@ class Sistema {
      */
     private void procesar_salida()
     {
-        tiempo_salida_cola[++numero_salidas]=evento_temporal.getHora();
+        //tiempo_salida_cola[++numero_salidas]=evento_temporal.getHora();
+        numero_salidas++;
+        tiempo_salida_cola.add(evento_temporal.getHora());
         if (tamano_cola > 0){
             tamano_cola--;
             generar_salida();
@@ -141,9 +151,11 @@ class Sistema {
     {
         if (ocupabilidad == numero_servidores){
             tamano_cola++;
-            tiempo_llegada_cola[numero_entradas++]=evento_temporal.getHora()*-1;
+            //tiempo_llegada_cola[numero_entradas++]=evento_temporal.getHora()*-1;
+            tiempo_llegada_cola.add(evento_temporal.getHora()*-1);
         } else{
-            tiempo_llegada_cola[numero_entradas++]=0;
+            //tiempo_llegada_cola[numero_entradas++]=0;
+            tiempo_llegada_cola.add(0);
             ocupabilidad++;
             generar_salida();
         }
@@ -156,15 +168,15 @@ class Sistema {
      */
     private double get_Random()
     {
-        //return numsRandom[contador++];
-        return Math.random();
+        return numsRandom[contador++];
+        //return Math.random();
     }
 
     /**
      *
      * @return Retorna el tiempo promedio de un cliente en cola (Wq)
      */
-    double getTiempoCola()
+    /*private double getTiempoCola()
     {
         double sum = 0.0;
         for (int i = 1; i < numero_salidas; i++) {
@@ -172,8 +184,15 @@ class Sistema {
                 sum+=tiempo_llegada_cola[i]+tiempo_salida_cola[i-1];
         }
         return sum/numero_salidas;
+    }*/
+    private double getTiempoCola(){
+        double sum = 0;
+        for (int i = 1; i < numero_salidas; i++) {
+            if(tiempo_llegada_cola.get(i)!=0)
+                sum+= tiempo_llegada_cola.get(i) + tiempo_salida_cola.get(i-1);
+        }
+        return sum/numero_salidas;
     }
-
     /**
      * Utiliza las variables estadísticas para realizar los cálculos y los muestra en pantalla.
      */
@@ -185,7 +204,7 @@ class Sistema {
         DecimalFormat df = new DecimalFormat("#.00");
         System.out.println("|1) El numero de clientes en el sistema es "+ tamano_cola +
                 "\t|\n|                                               |" +
-                "\n|2) El tiempo promedio en cola es de " + df.format(getTiempoCola() )+ "\t\t|");
+                "\n|2) El tiempo promedio en cola es de " + df.format(getTiempoCola() )+"\t\t|");
         System.out.println("|_______________________________________________|" );
     }
 
