@@ -40,12 +40,13 @@ class Sistema {
         evento_temporal = lista_eventos.poll();
         String tipo_evento;
         if((evento_temporal != null ? evento_temporal.getTipo() : 0) == 0){
-            tipo_evento = "Entrada ";
+            tipo_evento = "|\t" + (numero_entradas +1) + "\t\t|\tEntrada";
 
         } else{
-            tipo_evento = "Salida ";
+            tipo_evento = "|\t" +  (numero_salidas +1) + "\t\t|\tSalida ";
         }
-        System.out.println(tipo_evento + "hora: " + (evento_temporal != null ? evento_temporal.getHora() : 0));
+        System.out.println(tipo_evento + "\t\t|\t\t" + (evento_temporal != null ? evento_temporal.getHora() : 0) +"\t\t\t|");
+        System.out.println("|_______________________________________________|" );
         reloj = evento_temporal.getHora();
         if (evento_temporal.getTipo() == 0){
             procesar_entrada();
@@ -108,8 +109,8 @@ class Sistema {
             ocupabilidad++;
             generar_salida();
         }
-        if(numero_salidas==14)
-            System.out.println(14);
+        //if(numero_salidas==14)
+           // System.out.println(14);
         generar_entrada();
     }
 
