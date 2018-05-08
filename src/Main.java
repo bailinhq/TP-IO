@@ -23,14 +23,14 @@ public class Main {
                     "\n|#Cliente\t|\tTipoEvento\t|\tTiempoReloj\t|\tServidoresOcupados\t|\tLargoCola\t|\n" +
                     "|___________________________________________________________________________________|\n" );
 
-            while (sistema.getNumero_salidas() < 15) {
+            while (sistema.getNumero_salidas() < numero_Clientes) {
                 sistema.simular_sistema();
             }
 
             //Mostrar las estadísticas
             sistema.generarEstadisticas();
 
-            System.out.println("\n\n¿Desea repetir la simulación?\n [S/N]");
+            System.out.println("\n\n¿Desea repetir la simulación (El mismo número de clientes)?\n [S/N]");
             seguir = Character.toUpperCase(reader.next().charAt(0));
         }
     }

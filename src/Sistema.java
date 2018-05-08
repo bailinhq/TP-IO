@@ -159,6 +159,7 @@ class Sistema {
             ocupabilidad++;
             generar_salida();
         }
+        numero_entradas++;
         generar_entrada();
     }
 
@@ -168,8 +169,8 @@ class Sistema {
      */
     private double get_Random()
     {
-        return numsRandom[contador++];
-        //return Math.random();
+        //return numsRandom[contador++];
+        return Math.random();
     }
 
     /**
@@ -198,14 +199,14 @@ class Sistema {
      */
     void generarEstadisticas()
     {
-        System.out.println("\n\n _______________________________________________" );
-        System.out.println("|                  Estadísticas                 |");
-        System.out.println("|_______________________________________________|" );
+        System.out.println("\n\n _______________________________________________________________" );
+        System.out.println("|                           Estadísticas                        |");
+        System.out.println("|_______________________________________________________________|" );
         DecimalFormat df = new DecimalFormat("#.00");
-        System.out.println("|1) El numero de clientes en el sistema es "+ tamano_cola +
-                "\t|\n|                                               |" +
-                "\n|2) El tiempo promedio en cola es de " + df.format(getTiempoCola() )+"\t\t|");
-        System.out.println("|_______________________________________________|" );
+        System.out.println("|1) El número de clientes esperando al terminar fueron "+ tamano_cola +
+                "\t\t|\n|                                                               |" +
+                "\n|2) El tiempo promedio en cola es de " + df.format(getTiempoCola() )+" minutos\t\t\t\t|");
+        System.out.println("|_______________________________________________________________|" );
     }
 
 
